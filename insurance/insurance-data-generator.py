@@ -76,7 +76,7 @@ def get_modelmonitoring_insurance_dataset(start,end):
     GTpredict_data2 = predict_data.iloc[30:60,:].drop(['model_target'],axis=1)
     GTpredict_data3 = predict_data.iloc[60:90,:].drop(['model_target'],axis=1)
     GTpredict_data4 = predict_data.iloc[90:120,:].drop(['model_target'],axis=1)
-    GTpredict_data5 = predict_data.iloc[120:,:].drop(['model_target'],axis=1)
+    GTpredict_data5 = predict_data.iloc[120:151,:].drop(['model_target'],axis=1)
     
     GTpredict_data1.to_csv('GTpredict_data1.csv',index=False)
     GTpredict_data2.to_csv('GTpredict_data2.csv',index=False)
@@ -89,7 +89,7 @@ def get_modelmonitoring_insurance_dataset(start,end):
     predict_data2 = predict_data.iloc[30:60,:].drop(['GT_target'],axis=1)
     predict_data3 = predict_data.iloc[60:90,:].drop(['GT_target'],axis=1)
     predict_data4 = predict_data.iloc[90:120,:].drop(['GT_target'],axis=1)
-    predict_data5 = predict_data.iloc[120:,:].drop(['GT_target'],axis=1)
+    predict_data5 = predict_data.iloc[120:151,:].drop(['GT_target'],axis=1)
     
     predict_data1.to_csv('predict_data1.csv',index=False)
     predict_data2.to_csv('predict_data2.csv',index=False)
