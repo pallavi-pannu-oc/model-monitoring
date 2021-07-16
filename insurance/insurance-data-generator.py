@@ -7,14 +7,24 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from randomtimestamp import randomtimestamp
 from sklearn import preprocessing as skpreprocessing
-from datetime import datetime
+import datetime
 from tqdm import tqdm_notebook as tqdm
 
-def get_modelmonitoring_insurance_dataset(start,end):
-    start_list = start.split('-')
-    end_list = end.split('-')
-    start = datetime(int(start_list[2]),int(start_list[1]),int(start_list[0]),int(start_list[3]),int(start_list[4]),int(start_list[5]))
-    end = datetime(int(end_list[2]),int(end_list[1]),int(end_list[0]),int(end_list[3]),int(end_list[4]),int(end_list[5]))
+
+def save_dataset(data,name):
+    file_name = name +'.csv'
+    data.to_csv(file_name,index=False)
+
+
+def get_modelmonitoring_insurance_dataset(n_predictdatasets,n_GTdatasets,n_driftedatasets,start_timestamp,duration):
+    start_list = start_timestamp.split('-')
+    start = datetime.datetime(int(start_list[2]),int(start_list[0]),int(start_list[1]),0,0,0)
+    print("generating datasets from")
+    print("start-timestamp",start)
+    date_1 = datetime.datetime.strptime(start_timestamp, "%m-%d-%Y-%H-%M-%S")
+    end = date_1 + datetime.timedelta(days=duration)
+    print("end-timestamp",end)
+    
     data = pd.read_csv('insurance.csv')
     train = data.drop(['charges'],axis=1)
     y = data['charges']
@@ -57,72 +67,77 @@ def get_modelmonitoring_insurance_dataset(start,end):
     cols = cols[-2:]+cols[:-2]
     train_dataset = train_dataset[cols]
     train_dataset.to_csv('train.csv',index=False)
-    
+    ### Model Training ####
     insurance_input = train_dataset.drop(['charges'],axis=1)
     insurance_target = train_dataset['charges']
     x_scaled = StandardScaler().fit_transform(insurance_input)
     linReg = LinearRegression()
     linReg_model = linReg.fit(x_scaled, insurance_target)
-    
+    ### Predicting the charges on test data ####
     predict_data = predict_data.drop(['charges'],axis=1)
-    predict_data['model_target'] = linReg.predict(predict_data)
+    predict_data['charges'] = linReg.predict(predict_data)
     predict_data = predict_data.reset_index(drop=True)
-    for i in range(len(predict_data)):
+    for i in range(0,len(predict_data)):
         predict_data.loc[i,'timestamp'] = randomtimestamp(start=start, end=end)
         predict_data.loc[i,'unique_id'] = uuid.uuid4()
-    predict_data['GT_target'] = predict_data['model_target'] + predict_data['model_target']*0.05
     
-    GTpredict_data1 = predict_data.iloc[0:30,:].drop(['model_target'],axis=1)
-    GTpredict_data2 = predict_data.iloc[30:60,:].drop(['model_target'],axis=1)
-    GTpredict_data3 = predict_data.iloc[60:90,:].drop(['model_target'],axis=1)
-    GTpredict_data4 = predict_data.iloc[90:120,:].drop(['model_target'],axis=1)
-    GTpredict_data5 = predict_data.iloc[120:151,:].drop(['model_target'],axis=1)
+    #### Generating the datasets ######
+    predict_data = predict_data.sort_values(by=['timestamp'])
+    n_predict_rows = int(predict_data.shape[0]/n_predictdatasets)
+    index = 0
+    for i in range(1,n_predictdatasets+1):
+        pred_data = predict_data.iloc[index:index+n_predict_rows,:]
+        pred_data_name = str(i)+'_predict_data'
+        save_dataset(pred_data,pred_data_name)
+        index += n_predict_rows
     
-    GTpredict_data1.to_csv('GTpredict_data1.csv',index=False)
-    GTpredict_data2.to_csv('GTpredict_data2.csv',index=False)
-    GTpredict_data3.to_csv('GTpredict_data3.csv',index=False)
-    GTpredict_data4.to_csv('GTpredict_data4.csv',index=False)
-    GTpredict_data5.to_csv('GTpredict_data5.csv',index=False)
+    print("predict datasets generation completed")  
+    
+    for i in range(1,n_GTdatasets+1):
+        filename = str(i)+'_predict_data.csv'
+        gt_data = pd.read_csv(filename)
+        gt_data['GT_target'] = gt_data['charges'] + gt_data['charges']*0.05
+        gt_data = gt_data.drop(['charges'],axis=1)
+        gt_name = str(i)+'_GTpredict_data'
+        save_dataset(gt_data,gt_name)
         
+    print("GT datasets generation completed")  
     
-    predict_data1 = predict_data.iloc[0:30,:].drop(['GT_target'],axis=1)
-    predict_data2 = predict_data.iloc[30:60,:].drop(['GT_target'],axis=1)
-    predict_data3 = predict_data.iloc[60:90,:].drop(['GT_target'],axis=1)
-    predict_data4 = predict_data.iloc[90:120,:].drop(['GT_target'],axis=1)
-    predict_data5 = predict_data.iloc[120:151,:].drop(['GT_target'],axis=1)
-    
-    predict_data1.to_csv('predict_data1.csv',index=False)
-    predict_data2.to_csv('predict_data2.csv',index=False)
-    predict_data3.to_csv('predict_data3.csv',index=False)
-    predict_data4.to_csv('predict_data4.csv',index=False)
-    predict_data5.to_csv('predict_data5.csv',index=False)
-    
-    
-    drifted_data = GTpredict_data1.iloc[0:30,:].drop(['GT_target'],axis=1)
-    for i in range(0,len(drifted_data)):
-        if drifted_data['age'].iloc[i]>=30:
-            drifted_data['age'].iloc[i]=drifted_data['age'].iloc[i]+30
-        if drifted_data['bmi'].iloc[i]>=30:
-            drifted_data['bmi'].iloc[i] = drifted_data['bmi'].iloc[i]+15
-    drifted_data.to_csv('drifted_data1.csv',index=False)
-    
-    drifted_data2 = GTpredict_data2.iloc[0:30,:].drop(['GT_target'],axis=1)
-    drifted_data2['sex']='male'
-    drifted_data2['sex'].iloc[29]='female'
-    drifted_data2['region']='northwest'
-    drifted_data2['region'].iloc[28]='southeast'
-    drifted_data2['region'].iloc[29]='southeast'
-    drifted_data2.to_csv('drifted_data2.csv',index=False)
+    for j in range(1,n_driftedatasets+1):
+        filename = str(j)+'_predict_data.csv'
+        drifted_data = pd.read_csv(filename)
+        if j%2==0:
+            for i in range(0,len(drifted_data)):
+                if drifted_data['age'].iloc[i]>=30:
+                    drifted_data['age'].iloc[i]=drifted_data['age'].iloc[i]+30
+                if drifted_data['bmi'].iloc[i]>=30:
+                    drifted_data['bmi'].iloc[i] = drifted_data['bmi'].iloc[i]+15
+        else:   
+            drifted_data['sex']='male'
+            drifted_data['sex'].iloc[29]='female'
+            drifted_data['region']='northwest'
+            drifted_data['region'].iloc[28]='southeast'
+            drifted_data['region'].iloc[29]='southeast'
+        drifted_data = drifted_data.drop(['charges'],axis=1)
+        drifted_name = str(j)+'_drifted_data'
+        save_dataset(drifted_data,drifted_name)
+    print("drift datasets generation completed")    
     
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
+    parser.add_argument("--n_predictdatasets", dest="n_predictdatasets", required=True, type=int, help="number of predict datasets to be generated")
+    parser.add_argument("--n_GTdatasets", dest="n_GTdatasets", required=True, type=int, help="number of Ground Truth datasets to be generated")
+    parser.add_argument("--n_driftedatasets", dest="n_driftedatasets", required=True, type=int, help="number of drifted datasets to be generated")
     parser.add_argument("--start", dest="start", default=None, type=str, help="start-timestamp")
-    parser.add_argument("--end", dest="end", required=True, type=str, help="end-timestamp")
+    parser.add_argument("--duration", dest="duration", required=True, type=int, help="duration like 1 day, 2 day")
 
     global FLAGS
     FLAGS, unparsed = parser.parse_known_args()
+    n_predictdatasets = FLAGS.n_predictdatasets
+    n_GTdatasets = FLAGS.n_GTdatasets
+    n_driftedatasets = FLAGS.n_driftedatasets
     start_timestamp = FLAGS.start
-    end_timestamp = FLAGS.end
-    get_modelmonitoring_insurance_dataset(start_timestamp,end_timestamp)
+    duration = FLAGS.duration
+    get_modelmonitoring_insurance_dataset(n_predictdatasets,n_GTdatasets,n_driftedatasets,start_timestamp,duration)
      
