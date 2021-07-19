@@ -22,7 +22,8 @@ def get_modelmonitoring_insurance_dataset(n_predictdatasets,n_GTdatasets,n_drift
     print("generating datasets from")
     print("start-timestamp",start)
     date_1 = datetime.datetime.strptime(start_timestamp, "%m-%d-%Y-%H-%M-%S")
-    end = date_1 + datetime.timedelta(days=duration)
+    duration = duration.split('-')
+    end = date_1 + datetime.timedelta(hours = int(duration[0]) , minutes = int(duration[1]), seconds = int(duration[2]))
     print("end-timestamp",end)
     
     data = pd.read_csv('insurance.csv')
@@ -63,25 +64,26 @@ def get_modelmonitoring_insurance_dataset(n_predictdatasets,n_GTdatasets,n_drift
             print('Completed Label encoding on',col)
     
     train_dataset,predict_data = train_test_split(train_all, test_size=0.1)
+    print(predict_data.shape)
     cols = train_dataset.columns.tolist()
     cols = cols[-2:]+cols[:-2]
     train_dataset = train_dataset[cols]
     train_dataset.to_csv('train.csv',index=False)
-    ### Model Training ####
+    
     insurance_input = train_dataset.drop(['charges'],axis=1)
     insurance_target = train_dataset['charges']
     x_scaled = StandardScaler().fit_transform(insurance_input)
     linReg = LinearRegression()
     linReg_model = linReg.fit(x_scaled, insurance_target)
-    ### Predicting the charges on test data ####
+    
     predict_data = predict_data.drop(['charges'],axis=1)
+
     predict_data['charges'] = linReg.predict(predict_data)
     predict_data = predict_data.reset_index(drop=True)
     for i in range(0,len(predict_data)):
         predict_data.loc[i,'timestamp'] = randomtimestamp(start=start, end=end)
         predict_data.loc[i,'unique_id'] = uuid.uuid4()
     
-    #### Generating the datasets ######
     predict_data = predict_data.sort_values(by=['timestamp'])
     n_predict_rows = int(predict_data.shape[0]/n_predictdatasets)
     index = 0
@@ -121,7 +123,11 @@ def get_modelmonitoring_insurance_dataset(n_predictdatasets,n_GTdatasets,n_drift
         drifted_data = drifted_data.drop(['charges'],axis=1)
         drifted_name = str(j)+'_drifted_data'
         save_dataset(drifted_data,drifted_name)
-    print("drift datasets generation completed")    
+    print("drift datasets generation completed")  
+    
+    
+    
+   
     
 if __name__ == "__main__":
     
@@ -130,7 +136,7 @@ if __name__ == "__main__":
     parser.add_argument("--n_GTdatasets", dest="n_GTdatasets", required=True, type=int, help="number of Ground Truth datasets to be generated")
     parser.add_argument("--n_driftedatasets", dest="n_driftedatasets", required=True, type=int, help="number of drifted datasets to be generated")
     parser.add_argument("--start", dest="start", default=None, type=str, help="start-timestamp")
-    parser.add_argument("--duration", dest="duration", required=True, type=int, help="duration like 1 day, 2 day")
+    parser.add_argument("--duration", dest="duration", required=True, type=str, help="duration like 1 day, 2 day")
 
     global FLAGS
     FLAGS, unparsed = parser.parse_known_args()
