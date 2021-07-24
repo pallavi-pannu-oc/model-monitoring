@@ -23,6 +23,12 @@ def get_modelmonitoring_insurance_dataset(n_predictdatasets,n_GTdatasets,n_drift
     print("start-timestamp",start)
     date_1 = datetime.datetime.strptime(start_timestamp, "%m-%d-%Y-%H-%M-%S")
     duration = duration.split('-')
+    if(len(duration)<2):
+        duration.append('0')
+        duration.append('0')
+    elif(len(duration)<3):
+        duration.append('0')
+        
     end = date_1 + datetime.timedelta(hours = int(duration[0]) , minutes = int(duration[1]), seconds = int(duration[2]))
     print("end-timestamp",end)
     
@@ -55,21 +61,18 @@ def get_modelmonitoring_insurance_dataset(n_predictdatasets,n_GTdatasets,n_drift
     
     train_aug['charges'] = y+y*0.03
     train_all = pd.concat([data,train_aug])
-  
-    for col in ['sex', 'smoker', 'region']:
-        if (train_all[col].dtype == 'object'):
-            le = skpreprocessing.LabelEncoder()
-            le = le.fit(train_all[col])
-            train_all[col] = le.transform(train_all[col])
-            print('Completed Label encoding on',col)
-    
     train_dataset,predict_data = train_test_split(train_all, test_size=0.1)
-    print(predict_data.shape)
-    cols = train_dataset.columns.tolist()
-    cols = cols[-2:]+cols[:-2]
-    train_dataset = train_dataset[cols]
-    train_dataset.to_csv('train.csv',index=False)
+    save_dataset(train_dataset,'training-data')
     
+    for dataframe in [train_dataset,predict_data]:
+        for col in ['sex', 'smoker', 'region']:
+            if (dataframe[col].dtype == 'object'):
+                le = skpreprocessing.LabelEncoder()
+                le = le.fit(dataframe[col])
+                dataframe[col] = le.transform(dataframe[col])
+                print('Completed Label encoding on',col)
+    
+ 
     insurance_input = train_dataset.drop(['charges'],axis=1)
     insurance_target = train_dataset['charges']
     x_scaled = StandardScaler().fit_transform(insurance_input)
@@ -124,10 +127,7 @@ def get_modelmonitoring_insurance_dataset(n_predictdatasets,n_GTdatasets,n_drift
         drifted_name = str(j)+'_drifted_data'
         save_dataset(drifted_data,drifted_name)
     print("drift datasets generation completed")  
-    
-    
-    
-   
+     
     
 if __name__ == "__main__":
     
