@@ -1,5 +1,5 @@
 ## Insurance data generator
-1. insurance-data-generator.py generates data between the specified timestamps.
+1. insurance-data-generator.py generates data between the specified time.
 2. --n_predictdatasets signifies number of predict datasets to generate
 3. -n_GTdatasets signifies number of Ground truth datasets to generate
 4. -n_driftedatasets signifies number of drift datasets to generate
@@ -11,5 +11,5 @@
 3. pip install randomtimestamp
 ## How to Run
 4. Clone the repo and run using command 
-5. `!python data-generator.py --n_predictdatasets 5 --n_GTdatasets 3 --n_driftedatasets 2 --start '07-08-2021-0-0-0' --duration 10-20-16'
-6. It will generate train.csv file, and user specified number of datasets.
+5. `!python insurance-data-generator.py --n_predictdatasets 5 --n_GTdatasets 3 --n_driftedatasets 2 --start '07-08-2021-0-0-0' --duration '10-20-16'
+6. It will generate training-data.csv file, and user specified number of datasets.
