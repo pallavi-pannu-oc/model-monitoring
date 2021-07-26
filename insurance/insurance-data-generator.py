@@ -135,8 +135,8 @@ if __name__ == "__main__":
     parser.add_argument("--n_predictdatasets", dest="n_predictdatasets", required=True, type=int, help="number of predict datasets to be generated")
     parser.add_argument("--n_GTdatasets", dest="n_GTdatasets", required=True, type=int, help="number of Ground Truth datasets to be generated")
     parser.add_argument("--n_driftedatasets", dest="n_driftedatasets", required=True, type=int, help="number of drifted datasets to be generated")
-    parser.add_argument("--start", dest="start", default=None, type=str, help="start-timestamp")
-    parser.add_argument("--duration", dest="duration", required=True, type=str, help="duration like 1 day, 2 day")
+    parser.add_argument("--start", dest="start", default=None, type=str, help="start-timestamp in year-month-date-hours-minutes-seconds format")
+    parser.add_argument("--duration", dest="duration", required=True, type=str, help="duration in hours-minutes-seconds format")
 
     global FLAGS
     FLAGS, unparsed = parser.parse_known_args()
