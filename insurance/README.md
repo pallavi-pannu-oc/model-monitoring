@@ -3,7 +3,7 @@
 2. --n_predictdatasets signifies number of predict datasets to generate
 3. -n_GTdatasets signifies number of Ground truth datasets to generate
 4. -n_driftedatasets signifies number of drift datasets to generate
-5. --start '07-08-2021-0-0-0' signifies the start timestamp eg (i.e 8 july 2021)
+5. --start '07-08-2021-0-0-0' signifies the start timestamp eg (i.e 8 july 2021). start parameter in year-month-date-hours-minutes-seconds format.
 6. -duration signifies number of the hours,minutes and seconds (eg 10-20-1, means starting from 8 july, it will generate data for 10 hours,20minutes and 1 sec, from start ('07-08-2021-0-0-0').
 7. **Note : ** The number of GTdatasets and drifted datasets should be less than or equal to number of drifted datasets.
 ## Prerequisites
