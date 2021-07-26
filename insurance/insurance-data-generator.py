@@ -18,7 +18,7 @@ def save_dataset(data,name):
 
 def get_modelmonitoring_insurance_dataset(n_predictdatasets,n_GTdatasets,n_driftedatasets,start_timestamp,duration):
     start_list = start_timestamp.split('-')
-    start = datetime.datetime(int(start_list[2]),int(start_list[0]),int(start_list[1]),0,0,0)
+    start = datetime.datetime(int(start_list[2]),int(start_list[0]),int(start_list[1]),int(start_list[3]),int(start_list[4]),int(start_list[5]))
     print("generating datasets from")
     print("start-timestamp",start)
     date_1 = datetime.datetime.strptime(start_timestamp, "%m-%d-%Y-%H-%M-%S")
