@@ -78,16 +78,6 @@ def get_modelmonitoring_insurance_dataset(n_predictdatasets,n_GTdatasets,n_drift
                 dataframe[col] = le.transform(dataframe[col])
                 print('Completed Label encoding on',col)
     
- 
-    insurance_input = train_dataset.drop(['charges'],axis=1)
-    insurance_target = train_dataset['charges']
-    x_scaled = StandardScaler().fit_transform(insurance_input)
-    linReg = LinearRegression()
-    linReg_model = linReg.fit(x_scaled, insurance_target)
-    
-    predict_data = predict_data.drop(['charges'],axis=1)
-
-    predict_data['charges'] = linReg.predict(predict_data)
     predict_data = predict_data.reset_index(drop=True)
     for i in range(0,len(predict_data)):
         predict_data.loc[i,'timestamp'] = randomtimestamp(start=start, end=end)
