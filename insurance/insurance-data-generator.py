@@ -62,6 +62,7 @@ def get_modelmonitoring_insurance_dataset(n_predictdatasets,n_GTdatasets,n_drift
     train_aug['charges'] = y+y*0.03
     train_all = pd.concat([data,train_aug])
     train_dataset,predict_data = train_test_split(train_all, test_size=0.1)
+    train_dataset = train_dataset.reset_index(drop=True)
     
     for i in range(0,len(train_dataset)):
         train_dataset.loc[i,'timestamp'] = randomtimestamp(start=start, end=end)
