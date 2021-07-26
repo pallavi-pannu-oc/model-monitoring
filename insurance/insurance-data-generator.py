@@ -64,8 +64,8 @@ def get_modelmonitoring_insurance_dataset(n_predictdatasets,n_GTdatasets,n_drift
     train_dataset,predict_data = train_test_split(train_all, test_size=0.1)
     
     for i in range(0,len(train_dataset)):
-        predict_data.loc[i,'timestamp'] = randomtimestamp(start=start, end=end)
-        predict_data.loc[i,'unique_id'] = uuid.uuid4()
+        train_dataset.loc[i,'timestamp'] = randomtimestamp(start=start, end=end)
+        train_dataset.loc[i,'unique_id'] = uuid.uuid4()
     
     save_dataset(train_dataset,'training-data')
     
