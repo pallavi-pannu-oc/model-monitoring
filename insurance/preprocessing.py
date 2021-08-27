@@ -13,7 +13,8 @@ if __name__ == "__main__":
     global FLAGS
     FLAGS, unparsed = parser.parse_known_args()
     input_train_type = FLAGS.train_type
-
+    
+    DATA_DIR = '/data'
     config = json.load(open(os.path.join(DATA_DIR, "config.json")))
     with open(os.path.join(DATA_DIR, "credentials"), "r") as f:
         creds = f.read()
