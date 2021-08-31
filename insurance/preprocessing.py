@@ -31,7 +31,7 @@ if __name__ == "__main__":
         databasename=sql_config["sql_database"]
 
         datum_name = "insurance-data"
-        user = os.getenv('USERNAME')
+        user = os.getenv('USER')
         print("user",user)
         headers={"authorization": "Bearer "+os.getenv("DKUBE_USER_ACCESS_TOKEN")}
         print(headers)
