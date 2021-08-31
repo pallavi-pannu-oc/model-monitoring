@@ -13,11 +13,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_source", dest="data_source", default='aws_s3', type=str, help="source of remote dataset")
     parser.add_argument("--train_type", dest="train_type", default='training', type=str, help="training or retraining")
+    parser.add_argument("--user",dest="user",type=str,help="dkube user name")
 
     global FLAGS
     FLAGS, unparsed = parser.parse_known_args()
     data_source =   FLAGS.data_source
     input_train_type = FLAGS.train_type
+    user = FLAGS.user
     
     DATA_DIR = '/data'
     
@@ -31,13 +33,10 @@ if __name__ == "__main__":
         databasename=sql_config["sql_database"]
 
         datum_name = "insurance-data"
-        user = os.getenv('USER')
-        print("user",user)
         headers={"authorization": "Bearer "+os.getenv("DKUBE_USER_ACCESS_TOKEN")}
         print(headers)
         url = "http://dkube-controller-worker.dkube:5000/dkube/v2/controller/users/%s/datums/class/dataset/datum/%s"
         resp = requests.get(url % (user, datum_name), headers=headers).json()
-        print(resp)
         password = resp['data']['datum']['sql']['password']
 
         engine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}"
