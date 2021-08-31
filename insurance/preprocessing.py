@@ -34,7 +34,6 @@ if __name__ == "__main__":
 
         datum_name = "insurance-data"
         headers={"authorization": "Bearer "+os.getenv("DKUBE_USER_ACCESS_TOKEN")}
-        print(headers)
         url = "http://dkube-controller-worker.dkube:5000/dkube/v2/controller/users/%s/datums/class/dataset/datum/%s"
         resp = requests.get(url % (user, datum_name), headers=headers).json()
         password = resp['data']['datum']['sql']['password']
