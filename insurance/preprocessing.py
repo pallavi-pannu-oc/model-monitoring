@@ -90,5 +90,5 @@ if __name__ == "__main__":
             data = pd.read_csv(DATA_DIR+'/'+file)
             final_df = pd.concat([final_df,data])
 
-    final_df.rename(columns={'GT_target':'charges'}, inplace=True)
-    final_df.to_csv('data.csv',index=False)
+        final_df.rename(columns={'GT_target':'charges'}, inplace=True)
+        final_df.to_csv('data.csv',index=False)
