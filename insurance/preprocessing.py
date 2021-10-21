@@ -82,7 +82,7 @@ if __name__ == "__main__":
         if input_train_type == 'training' and s3_object.key.startswith(mm_name+'/training'):
             path, filename = os.path.split(s3_object.key)
             if filename == 'insurance.csv':
-                data = pd.read_csv(DATA_DIR+'/insurance.csv')
+                data = pd.read_csv(DATA_DIR+'/training.csv')
                 data.to_csv('/train-data/data.csv',index=False)
                 
    ### LOCAL DATA SOURCE #####          
