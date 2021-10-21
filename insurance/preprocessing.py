@@ -88,15 +88,15 @@ if __name__ == "__main__":
    ### LOCAL DATA SOURCE #####          
     if data_source == 'local':
         if input_train_type == 'training':
-     
             data = pd.read_csv(DATA_DIR+'/insurance.csv')
-            print(data.head())
             data.to_csv('/train-data/data.csv',index=False)
         
         if input_train_type == 'retraining':
             final_df = pd.DataFrame()
             for file in os.listdir(DATA_DIR):
+                print(file)
                 data = pd.read_csv(DATA_DIR+'/'+file)
+                print(data)
                 final_df = pd.concat([final_df,data])
 
             final_df.rename(columns={'GT_target':'charges'}, inplace=True)
