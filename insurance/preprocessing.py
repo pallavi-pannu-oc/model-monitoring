@@ -70,15 +70,14 @@ if __name__ == "__main__":
                 path, filename = os.path.split(s3_object.key)
                 if filename.endswith('GTpredict_data.csv'):
                     my_bucket.download_file(s3_object.key, filename)
+               
+                final_df = pd.DataFrame()
+                for file in glob.glob("*GTpredict_data.csv"):
+                    data = pd.read_csv(file)
+                    final_df = pd.concat([final_df,data])
 
-        if input_train_type =='retraining':
-            final_df = pd.DataFrame()
-            for file in glob.glob("*GTpredict_data.csv"):
-                data = pd.read_csv(file)
-                final_df = pd.concat([final_df,data])
-
-            final_df.rename(columns={'GT_target':'charges'}, inplace=True)
-            final_df.to_csv('/train-data/data.csv',index=False)
+                final_df.rename(columns={'GT_target':'charges'}, inplace=True)
+                final_df.to_csv('/train-data/data.csv',index=False)
             
         if input_train_type == 'training' and s3_object.key.startswith(mm_name+'/training'):
             path, filename = os.path.split(s3_object.key)
