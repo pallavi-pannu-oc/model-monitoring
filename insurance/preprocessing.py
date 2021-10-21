@@ -88,7 +88,9 @@ if __name__ == "__main__":
    ### LOCAL DATA SOURCE #####          
     if data_source == 'local':
         if input_train_type == 'training':
+     
             data = pd.read_csv(DATA_DIR+'/insurance.csv')
+            print(data.head())
             data.to_csv('/train-data/data.csv',index=False)
         
         if input_train_type == 'retraining':
