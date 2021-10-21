@@ -93,9 +93,9 @@ if __name__ == "__main__":
         
         if input_train_type == 'retraining':
             final_df = pd.DataFrame()
-            for file in os.listdir(DATA_DIR):
+            for file in glob.glob(os.path.join(DATA_DIR, "*.csv"))
                 print(file)
-                data = pd.read_csv(DATA_DIR+'/'+file)
+                data = pd.read_csv(file)
                 print(data)
                 final_df = pd.concat([final_df,data])
 
