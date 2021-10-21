@@ -93,7 +93,7 @@ if __name__ == "__main__":
         
         if input_train_type == 'retraining':
             final_df = pd.DataFrame()
-            for file in glob.glob(os.path.join(DATA_DIR, "*.csv"))
+            for file in glob.glob(os.path.join(DATA_DIR, "*.csv")):
                 print(file)
                 data = pd.read_csv(file)
                 print(data)
