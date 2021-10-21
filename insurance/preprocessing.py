@@ -80,15 +80,23 @@ if __name__ == "__main__":
             final_df.rename(columns={'GT_target':'charges'}, inplace=True)
             final_df.to_csv('/train-data/data.csv',index=False)
             
-    if input_train_type == 'training':
-            data = pd.read_csv('https://dkube-examples-data.s3.us-west-2.amazonaws.com/monitoring-insurance/training-data/insurance.csv')
+        if input_train_type == 'training' and s3_object.key.startswith(mm_name+'/training'):
+            path, filename = os.path.split(s3_object.key)
+            if filename == 'insurance.csv':
+                data = pd.read_csv(DATA_DIR+'/insurance.csv')
+                data.to_csv('/train-data/data.csv',index=False)
+                
+   ### LOCAL DATA SOURCE #####          
+    if data_source == 'local':
+        if input_train_type == 'training':
+            data = pd.read_csv(DATA_DIR+'/insurance.csv')
             data.to_csv('/train-data/data.csv',index=False)
-    
-    if data_source == 'local'and input_train_type == 'retraining':
-        final_df = pd.DataFrame()
-        for file in os.listdir(DATA_DIR):
-            data = pd.read_csv(DATA_DIR+'/'+file)
-            final_df = pd.concat([final_df,data])
+        
+        if input_train_type == 'retraining':
+            final_df = pd.DataFrame()
+            for file in os.listdir(DATA_DIR):
+                data = pd.read_csv(DATA_DIR+'/'+file)
+                final_df = pd.concat([final_df,data])
 
-        final_df.rename(columns={'GT_target':'charges'}, inplace=True)
-        final_df.to_csv('data.csv',index=False)
+            final_df.rename(columns={'GT_target':'charges'}, inplace=True)
+            final_df.to_csv('data.csv',index=False)
