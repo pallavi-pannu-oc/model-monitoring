@@ -3,6 +3,9 @@
 ## Prerequisites
 This example supports 3 dataset sources i.e. Local, Aws_S3 and sql. For aws_s3 (S3 bucket is required) and for sql (SQL database is required).
 
+### Local (By default)
+1. Move to Launch IDE step below directly.
+
 ### S3 Bucket
 Create an AWS S3 bucket with the name mm-workflow. You need the following to access the bucket
    - AWS_ACCESS_KEY_ID : your_access_key
@@ -65,10 +68,10 @@ Create a database in your MySql server. You need the following to access the dat
 
 
 ## MODEL MONITOR (SDK)
-1. From **workspace/insurance/insurance**, open data_generation.ipynb notebook for generating predict and groundtruth datasets.
+1. From **workspace/insurance/insurance**, open data_generation.ipynb notebook for pushing the groundtruth and predict datasets.
 2. In 1st cell, Update Frequency according to what you set in Modelmonitor. 
-3. Then Run All Cells. It will start Pushing the data. Check {modelmonitorname}-groundtruth and {modelmonitorname}-predict dataset repos are created in dkube.
-4. From **workspace/insurance/insurance** run all the cells in the sdk.ipynb. New model monitor will be created.
+3. Then Run All Cells. It will start Pushing the data.
+4. From **workspace/insurance/insurance** run all the cells in the modelmonitor.ipynb. New model monitor will be created.
 
 ## MODEL MONITOR (UI)
 
@@ -151,22 +154,25 @@ Click on Start for the specific monitor on Modelmonitor dashboard.
    - Modelmonitor can only be started in 'ready' state.
    - It can be stopped anytime. Previous data will not be erased.
 
-## Retraining
-1. Stop the modelmonitor
-2. Open resources.ipynb and set INPUT_TRAIN_TYPE = 'retraining' and run all the cells.
-3. Open pipeline.ipynb and run all the cells.
-4. This creates a new version of dataset and a new version of model
+## Retraining 
+1. **UI**: Stop the modelmonitor.
+3. Open resources.ipynb and set INPUT_TRAIN_TYPE = 'retraining' and run all the cells.
+4. Open pipeline.ipynb and run all the cells.
+5. This creates a new version of dataset and a new version of model
    - New dataset version will be created for 'insurance-training-data' dataset
    - New model version will be created for 'insurance-model' model
-5. Edit modelmonitor
+6. Edit modelmonitor (UI)
    - Specify the new model version on basic page
    - Specify new dataset version on Training data page
    - Save & Submit
    - Click Next to go to the schema page and Accept the regenerated schema.
    - Wait for a few (30) sec
    - Start the modelmonitor
+7. Edit modelmonitor (SDK)
+   - Uncomment the stop model monitor cell.
+   - Run the Retraining cell and it will update the dataset and model version automatically.
 
 ## CLEANUP
 1. After your expirement is complete, 
-  - Open resources.ipynb and set CLEANUP=True in first cell and run the last Cleanup cell.
-  - Open sdk.ipynb and set CLEANUP=True in first cell and run the last Cleanup cell.
+  - Open resources.ipynb and set CLEANUP=True in last Cleanup cell.
+  - Open modelmonitor.ipynb and set CLEANUP=True in last Cleanup cell.
