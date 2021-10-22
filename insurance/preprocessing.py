@@ -100,4 +100,4 @@ if __name__ == "__main__":
                 final_df = pd.concat([final_df,data])
 
             final_df.rename(columns={'GT_target':'charges'}, inplace=True)
-            final_df.to_csv('data.csv',index=False)
+            final_df.to_csv('/train-data/data.csv',index=False)
