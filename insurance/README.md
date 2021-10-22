@@ -1,17 +1,38 @@
 # Model Monitoring Insurance Example
 
+## Prerequisites
+This example supports 3 dataset sources i.e. Local, Aws_S3 and sql. For aws_s3 (S3 bucket is required) and for sql (SQL database is required).
+
+### S3 Bucket
+Create an AWS S3 bucket with the name mm-workflow. You need the following to access the bucket
+   - AWS_ACCESS_KEY_ID : your_access_key
+   - AWS_SECRET_ACCESS_KEY : your_secret_key
+### SQL Database
+Create a database in your MySql server. You need the following to access the database
+   - Username : **
+   - Password : **
+   - HostAddress: **
+   - PortNumber : **
+   - Database Name : **
+
 ## INSURANCE MODEL CREATION :
 
-### Code
+## Launch IDE
+1. Create an IDE (JupyterLab)
+   - Use sklearn framework
+2. Add the below environment variables in configuration tab **if your data is in aws_s3**, if your data is in local skip this step.
+   - AWS_ACCESS_KEY_ID : your_access_key
+   - AWS_SECRET_ACCESS_KEY : your_secret_key
+3. Click Submit.
+4. Upload the resources.ipynb notebook and fill the details in the first cell.
+   - MODELMONITOR_NAME = {your model monitor name}
+   - DATASET_SOURCE = { 'local' or 'aws_s3' or 'sql'}
+   - INPUT_TRAIN_TYPE = {'training' or 'retraining'}
+5.Run all the cells.
 
-1. Add Code **insurance**
-  - Source: Git
-  - URL: https://github.com/oneconvergence/dkube-examples.git
-  - Branch : monitoring
+### Dataset (SQL)
 
-### Dataset (AWS OR SQL)
-
-- Note: Skip this step if your data is in aws-s3.It will be automatically created in pipeline.
+- ### Note: Skip this step if your data is in aws-s3 or in local.It will be automatically created in pipeline.
 
 1. Add dataset **insurance-data**
 2. Versioning: None
@@ -22,16 +43,18 @@
    - Password : **
    - HostAddress: **
    - PortNumber : **
-   - Database Name : monitoring
+   - Database Name : **
 
-### Pipeline
+### Pipeline (Training or Retraining)
 
-1. From **workspace/insurance/insurance** run **pipeline.ipynb** to build the pipeline.In 1st cell, for retraining specify input_train_type = 'retraining' and specify the source if your data is in sql.
-2. The pipeline includes preprocessing, training and serving stages. 
+1. From **workspace/insurance/insurance** open **pipeline.ipynb** to build the pipeline.
+2. The pipeline includes preprocessing, training and serving stages. Run all cells
   - **preprocessing**: the preprocessing stage generates the dataset (either training-data or retraining-data) depending on user choice.
   - **training**: the training stage takes the generated dataset as input, train a sgd model and outputs the model.
   - **serving**: The serving stage takes the generated model and serve it with a predict endpoint for inference. 
-
+3. Verify that the pipeline has created the following resources
+  - Datasets: 'insurance-training-data' with version v2.
+  - Model: 'insurance-model' with version v2
 
 ### Inference
   - Go to webapp directory, and build a docker image with given **Dockerfile** or pull **ocdr/streamlit-webapp:insurance**.
@@ -41,7 +64,13 @@
   - Fill serving URL, auth token and other details and click predict.
 
 
-## MODEL MONITOR
+## MODEL MONITOR (SDK)
+1. From **workspace/insurance/insurance**, open data_generation.ipynb notebook for generating predict and groundtruth datasets.
+2. In 1st cell, Update Frequency according to what you set in Modelmonitor. 
+3. Then Run All Cells. It will start Pushing the data. Check {modelmonitorname}-groundtruth and {modelmonitorname}-predict dataset repos are created in dkube.
+4. From **workspace/insurance/insurance** run all the cells in the sdk.ipynb. New model monitor will be created.
+
+## MODEL MONITOR (UI)
 
 1. From model monitoring create a new monitor
 2. Give a name.
@@ -51,43 +80,93 @@
 6. Change model run frequency to 5 hours. (in UI it’s five hours but it will run in every 5 mins because of d3qatest tag)
 7. Submit
 
-## Add training data 
-1. Prefix: mm-demo/training-data
-2. Type: CSV
-3. Add transformer script: https://github.com/oneconvergence/dkube-examples/tree/monitoring/insurance/transform-data.py
-4. Note: Download the script in your setup and then add it by browsing.
-5. Save training data.
+### Add training data 
+1. Name : insurance-training-data 
+   - This is DKube local dataset, created by the training/retraining pipeline above
 
-## Update Schema
+2. If training data source is S3/d3 select version: eg. v2 
+   - Type : csv
+3. If training data source is SQL
+      - Add query: `select * from insurance` (the table name can be different)
+4. Download the [transformer script](https://github.com/oneconvergence/dkube-examples/tree/monitoring/insurance/transform-data.py) and upload. 
+5. Note: Download the script in your setup and then add it by browsing.
+6. Save training data.
+
+### Upload train metrics
+1. Dwonload the json from from [link](https://raw.githubusercontent.com/oneconvergence/dkube-examples/monitoring/insurance/train_metrics.json), and upload into train metrics tab.
+2.  Click Save
+
+### Update Schema
 1. Edit the model monitor
 2. Go to schema and change
-3. charges as prediction output - continuous
-4. unique_id as RowID - continuous
-5. Timestamp as timestamp - continuous
-6. Change value type: Age and bmi to continuous
-7. Select all Input features and unselect charges, unique_id, and timestamp.
-8. Click Next and save.
+  - charges as prediction output.
+  - unique_id as RowID
+  - Timestamp as timestamp
+3. Select all or interested Input features.
+4. Click Next and save.
 
-## Data Generation
-1. Run data_generation.ipynb notebook for generating predict and groundtruth datasets.
-2. In 6th Cell Fill MonitorName with the name of your monitor name MonitorName="{your_model_monitor_name}"
-3. In 6th cell, Update Frequency according to what you set in Modelmonitor. If the d3qatest tag was provided replace it with to use frequency in minutes. For eg: for 5 minutes replace it with `5m` else use `5h` for hours assuming Frequency specified in monitor was 5.
-4. In 6th cell. Set DATASET_SOURCE as DataSource.SQL if you want to push the data in SQL and fill the below details hostname,username,password,database_name.
-4. Then Run All Cells. It will start Pushing the data.
-5. After First Push of dataset by this script. Configure the generated datasets in modelmonitor.
+### Data Generation
+1. Open data_generation.ipynb notebook for generating predict and groundtruth datasets.
+2. In 1st cell, Update Frequency according to what you set in Modelmonitor. If the d3qatest tag was provided replace it with to use frequency in minutes. For eg: for 5 minutes replace it with `5m` else use `5h` for hours assuming Frequency specified in monitor was 5.
+3. Then Run All Cells. It will start Pushing the data, by default it will push the data to local.
+4. **After First Push of dataset by this script, configure the generated datasets in modelmonitor as follows.**
+   - Verify that the following datasets are created: {model-monitor}-predict, {model-monitor}-groundtruth
+   - This step will be more streamlined in coming releases.
 
-## Configure Following Dataset in modelmonitor
--  **Predict Dataset**
--  Dataset: {model-monitor}-predict
--  Type: CSV
+### Configure Following Dataset in modelmonitor
+**Predict Dataset**
+1. If source S3 or local
+  -  Dataset: {model-monitor}-predict
+  -  Type: CSV
+2. If source SQL
+      - Query: `select * from insurance_predict` (table will be added to the DB by the datagen script)
 
-- **Labelled Dataset**
-- Dataset: {model-monitor}-groundtruth
-- Type: CSV
+**Labelled Dataset**
+1. If source S3 or local
+  -  Dataset: {model-monitor}-groundtruth
+  -  Type: CSV
+2. If source SQL
+      - Query: `select * from insurance_gt` (table will be added to the DB by the datagen script)
 
 - **Ground Truth Column Name**: GT_target
 - **Prediction Column Name**: charges
 
-6. After that add Alerts - generally this script will be creating alert on features age, sex, bmi, region. Configure one alert for each individual feature. With threshold between 0 to 1. generally advised 0.02 to 0.03 inclusive.
-7. Start Monitor.
+### Alerts
+Add Feature Drift Alerts 
+ - The datageneration script will be generating drift on the following features - age, sex, bmi, region. 
+ - Suggest to configure a separate alert for each individual feature. 
+ - Use a threshold between 0 to 1. generally advised 0.05 to 0.1 for all categorical or all continious columns columns,  0.05 to 0.01 for mixed categorical and continious columns columns.
+ - It fires an alert when calculated drift goes under the configured threshold
 
+Add Performance Decay Alerts
+  - Create an alert and choose Perormance Decay from dropdown.
+  - Selct percentage and choose metrics from down.
+  - Provide percentage threshold value betweeen 5 to 10 and save.
+
+### SMTP Settings
+Configure your SMTP server settings on Operator screen. This is optional. If SMTP server is not configured, no email alerts will be generated.
+
+### Start Monitor.
+Click on Start for the specific monitor on Modelmonitor dashboard. 
+   - Modelmonitor can only be started in 'ready' state.
+   - It can be stopped anytime. Previous data will not be erased.
+
+## Retraining
+1. Stop the modelmonitor
+2. Open resources.ipynb and set INPUT_TRAIN_TYPE = 'retraining' and run all the cells.
+3. Open pipeline.ipynb and run all the cells.
+4. This creates a new version of dataset and a new version of model
+   - New dataset version will be created for 'insurance-training-data' dataset
+   - New model version will be created for 'insurance-model' model
+5. Edit modelmonitor
+   - Specify the new model version on basic page
+   - Specify new dataset version on Training data page
+   - Save & Submit
+   - Click Next to go to the schema page and Accept the regenerated schema.
+   - Wait for a few (30) sec
+   - Start the modelmonitor
+
+## CLEANUP
+1. After your expirement is complete, 
+  - Open resources.ipynb and set CLEANUP=True in first cell and run the last Cleanup cell.
+  - Open sdk.ipynb and set CLEANUP=True in first cell and run the last Cleanup cell.
