@@ -48,7 +48,7 @@ if __name__ == "__main__":
     
     
     ### AWS-S3 DATASOURCE ###
-    if data_source == "aws_s3" and input_train_type == 'retraining':
+    if data_source == "aws_s3":
         config = json.load(open(os.path.join(DATA_DIR, "config.json")))
         with open(os.path.join(DATA_DIR, "credentials"), "r") as f:
             creds = f.read()
