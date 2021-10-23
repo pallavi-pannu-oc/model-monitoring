@@ -79,11 +79,11 @@ if __name__ == "__main__":
                 final_df.rename(columns={'GT_target':'charges'}, inplace=True)
                 final_df.to_csv('/train-data/data.csv',index=False)
             
-        if input_train_type == 'training' and s3_object.key.startswith(mm_name+'/training'):
-            path, filename = os.path.split(s3_object.key)
-            if filename == 'insurance.csv':
-                data = pd.read_csv(DATA_DIR+'/training.csv')
-                data.to_csv('/train-data/data.csv',index=False)
+            if input_train_type == 'training' and s3_object.key.startswith("monitoring-insurance/training-data/"):
+                path, filename = os.path.split(s3_object.key)
+                if filename == 'insurance.csv':
+                    data = pd.read_csv(DATA_DIR+'/insurance.csv')
+                    data.to_csv('/train-data/data.csv',index=False)
                 
    ### LOCAL DATA SOURCE #####          
     if data_source == 'local':
