@@ -81,8 +81,9 @@ if __name__ == "__main__":
             
             if input_train_type == 'training' and s3_object.key.startswith("monitoring-insurance/training-data/"):
                 path, filename = os.path.split(s3_object.key)
-                if filename == 'insurance.csv':
-                    data = pd.read_csv(DATA_DIR+'/insurance.csv')
+                if filename == "insurance.csv":
+                    my_bucket.download_file(s3_object.key, filename)
+                    data = pd.read_csv("insurance.csv")
                     data.to_csv('/train-data/data.csv',index=False)
                 
    ### LOCAL DATA SOURCE #####          
