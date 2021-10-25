@@ -42,10 +42,17 @@ if __name__ == "__main__":
 
         engine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}"
                                 .format(host=hostname, db=databasename, user=username, pw=password))
-        query = "SELECT * FROM insurance"
-        train_df = pd.read_sql(query, engine)
-        train_df.to_csv('/train-data/data.csv',index=False)
-    
+        
+        if input_train_type == 'training':
+            query = "SELECT * FROM insurance"
+            train_df = pd.read_sql(query, engine)
+            train_df.to_csv('/train-data/data.csv',index=False)
+        
+        if input_train_type == 'retraining':
+            query = "SELECT * FROM insurance_gt"
+            train_df = pd.read_sql(query, engine)
+            train_df.rename(columns={'GT_target':'charges'}, inplace=True)
+            train_df.to_csv('/train-data/data.csv',index=False)
     
     ### AWS-S3 DATASOURCE ###
     if data_source == "aws_s3":
@@ -95,9 +102,7 @@ if __name__ == "__main__":
         if input_train_type == 'retraining':
             final_df = pd.DataFrame()
             for file in glob.glob(os.path.join(DATA_DIR, "*.csv")):
-                print(file)
                 data = pd.read_csv(file)
-                print(data)
                 final_df = pd.concat([final_df,data])
 
             final_df.rename(columns={'GT_target':'charges'}, inplace=True)
