@@ -44,7 +44,7 @@ if __name__ == "__main__":
                                 .format(host=hostname, db=databasename, user=username, pw=password))
         query = "SELECT * FROM insurance"
         train_df = pd.read_sql(query, engine)
-        train_df.to_csv('/train-data/data.csv')
+        train_df.to_csv('/train-data/data.csv',index=False)
     
     
     ### AWS-S3 DATASOURCE ###
