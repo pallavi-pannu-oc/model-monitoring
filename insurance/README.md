@@ -9,7 +9,7 @@
   - Follow this README and then jump to [README.sdk.md](https://github.com/pallavi-pannu-oc/model-monitoring/blob/SDK/insurance/README.sdk.md) for the next steps.
 
 ## Prerequisites
-- This example supports 3 dataset sources i.e. Local, Aws_S3 and SQL. 
+- This example supports 3 dataset sources i.e. **Local, Aws_S3 and SQL**. 
 - By default this example uses local data source.
 - For Aws_S3 **(S3 bucket is required)**
   - Create an AWS S3 bucket with the name mm-workflow. You need access and secret key to access the bucket.
@@ -41,7 +41,7 @@
      - **MODELMONITOR_NAME** = {your model monitor name}
      - **DATASET_SOURCE** = { one of your choice in ['local' or 'aws_s3' or 'sql'] }
      - **INPUT_TRAIN_TYPE** = {'training'}
-5.Run all the cells. This will create all the dkube resources required for this example automatically.
+5. Run all the cells. This will create all the dkube resources required for this example automatically.
 
 ## Insurance Model Training
 
@@ -56,8 +56,8 @@
      - Model: 'insurance-model' with version v2
 
 ### Inference
-  - Go to webapp directory, and build a docker image with given **Dockerfile** or pull **ocdr/streamlit-webapp:insurance**.
-  - Run command  
-  - > docker run -p 8501:8501 ocdr/streamlit-webapp:insurance 
-  - Open http://localhost:8501/ in your browser,
-  - Fill serving URL, auth token and other details and click predict.
+1. Go to webapp directory, and build a docker image with given **Dockerfile** or pull **ocdr/streamlit-webapp:insurance**.
+2. Run command  
+     - docker run -p 8501:8501 ocdr/streamlit-webapp:insurance 
+3. Open http://localhost:8501/ in your browser,
+     - Fill serving URL, auth token and other details and click predict.
