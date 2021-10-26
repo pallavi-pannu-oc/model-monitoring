@@ -33,17 +33,16 @@
 ### Launch IDE
 1. Create an IDE (JupyterLab)
    - Use sklearn framework
-2. **If your data is in local**, move to step 3 directly.
-   **If your data is in aws_s3:**, 
-   - Add these [**AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY**] environment variables with your secret values in configuration tab 
-   **If your data is in SQL:**
-   - Add these [**USERNAME, PASSWORD, HOSTADDRESS, PORTNUMBER, DATABASENAME**] environment variables with your secret values in configuration tab 
-   
+2. (a) **If your data is in local**, move to step 3 directly.
+   (b) **If your data is in aws_s3:**, 
+          - Add these [**AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY**] environment variables with your secret values in configuration tab 
+   (c) **If your data is in SQL:**
+          - Add these [**USERNAME, PASSWORD, HOSTADDRESS, PORTNUMBER, DATABASENAME**] environment variables with your secret values in configuration tab    
 3. Click Submit.
 4. Download the [resources.ipynb]() and upload the notebook and fill the details in the first cell.
-   - MODELMONITOR_NAME = {your model monitor name}
-   - DATASET_SOURCE = { one of your choice in ['local' or 'aws_s3' or 'sql'] }
-   - INPUT_TRAIN_TYPE = {'training'}
+   - **MODELMONITOR_NAME** = {your model monitor name}
+   - **DATASET_SOURCE** = { one of your choice in ['local' or 'aws_s3' or 'sql'] }
+   - **INPUT_TRAIN_TYPE** = {'training'}
 5.Run all the cells. This will create all the dkube resources required for this example automatically.
 
 ## Insurance Model Training
