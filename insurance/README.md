@@ -33,11 +33,12 @@
 ### Launch IDE
 1. Create an IDE (JupyterLab)
    - Use sklearn framework
-2. If your data is in local, move to step 3 directly.
-   - Add the below environment variables with your secret values in configuration tab **if your data is in aws_s3**,
-     - AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
-   - Add the below environment variables with your secret values in configuration tab **if your data is in SQL**
-      - USERNAME, PASSWORD, HOSTADDRESS, PORTNUMBER, DATABASENAME
+2. **If your data is in local**, move to step 3 directly.
+   **If your data is in aws_s3:**, 
+   - Add these [**AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY**] environment variables with your secret values in configuration tab 
+   **If your data is in SQL:**
+   - Add these [**USERNAME, PASSWORD, HOSTADDRESS, PORTNUMBER, DATABASENAME**] environment variables with your secret values in configuration tab 
+   
 3. Click Submit.
 4. Download the [resources.ipynb]() and upload the notebook and fill the details in the first cell.
    - MODELMONITOR_NAME = {your model monitor name}
