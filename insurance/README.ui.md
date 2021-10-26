@@ -1,5 +1,6 @@
 # MODEL MONITORING INSURANCE EXAMPLE (UI)
 
+## Create Model Monitor
 1. From model monitoring create a new monitor
 2. Give a name.
 3. Add tag d3qatest
@@ -39,6 +40,7 @@
   -  Dataset: {model-monitor}-predict
   -  Type: CSV
 2. If source SQL
+      - Dataset: insurance-data
       - Query: `select * from insurance_predict` (table will be added to the DB by the datagen script)
 
 **Labelled Dataset**
@@ -46,6 +48,7 @@
   -  Dataset: {model-monitor}-groundtruth
   -  Type: CSV
 2. If source SQL
+      - Dataset: insurance-data
       - Query: `select * from insurance_gt` (table will be added to the DB by the datagen script)
 
 - **Ground Truth Column Name**: GT_target
@@ -72,7 +75,7 @@ Click on Start for the specific monitor on Modelmonitor dashboard.
 Configure your SMTP server settings on Operator screen. This is optional. If SMTP server is not configured, no email alerts will be generated.
 
 ## DATA GENERATION
-1. Open data_generation.ipynb notebook for generating predict and groundtruth datasets.
+1. Open [data_generation.ipynb](https://github.com/pallavi-pannu-oc/model-monitoring/blob/SDK/insurance/data_generation.ipynb) notebook for generating predict and groundtruth datasets.
 2. In 1st cell, Update Frequency according to what you set in Modelmonitor. If the d3qatest tag was provided replace it with to use frequency in minutes. For eg: for 5 minutes replace it with `5m` else use `5h` for hours assuming Frequency specified in monitor was 5.
 3. Then Run All Cells. It will start Pushing the data, by default it will push the data to local.
 
@@ -92,4 +95,4 @@ Configure your SMTP server settings on Operator screen. This is optional. If SMT
    - Start the modelmonitor
 
 ## CLEANUP
-1. After your expirement is complete, Open resources.ipynb and set CLEANUP=True in last Cleanup cell.
+1. After your expirement is complete, Open [resources.ipynb](https://github.com/pallavi-pannu-oc/model-monitoring/blob/SDK/insurance/resources.ipynb) and set CLEANUP=True in last Cleanup cell and run.
