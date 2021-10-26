@@ -1,6 +1,6 @@
 # MODEL MONITORING INSURANCE EXAMPLE (UI)
 
-## 1. Create Model Monitor
+### 1. Create Model Monitor
 1. From model monitoring create a new monitor
 2. Give a name.
 3. Add tag d3qatest
