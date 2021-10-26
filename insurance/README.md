@@ -25,19 +25,16 @@
 3. Source : SQL
 4. Provider : MYSQL
 5. Select password and fill the details
-   - Username : **
-   - Password : **
-   - HostAddress: **
-   - PortNumber : **
-   - Database Name : **
+- Username, Password, HostAddress, PortNumber, Database Name
+   
 
 ### Launch IDE
 1. Create an IDE (JupyterLab)
-   - Use sklearn framework
-2. - **If your data is in local**, move to step 3 directly.
-   - **If your data is in aws_s3:**
+- Use sklearn framework
+2.**If your data is in local**, move to step 3 directly.
+  - **If your data is in aws_s3:**
      - Add these [AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY] environment variables with your secret values in configuration tab 
-   - **If your data is in SQL:**
+  - **If your data is in SQL:**
      - Add these [USERNAME, PASSWORD, HOSTADDRESS, PORTNUMBER, DATABASENAME] environment variables with your secret values in configuration tab    
 3. Click Submit.
 4. Download the [resources.ipynb]() and upload the notebook and fill the details in the first cell.
