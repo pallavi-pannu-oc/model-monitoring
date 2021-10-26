@@ -34,7 +34,7 @@
   - **If your data is in aws_s3:**
      - Add these [AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY] environment variables with your secret values in configuration tab 
   - **If your data is in SQL:**
-     - Add these [USERNAME, PASSWORD, HOSTADDRESS, PORTNUMBER, DATABASENAME] environment variables with your secret values in configuration tab    
+     - Add these [USERNAME, PASSWORD, HOSTADDRESS,DATABASENAME] environment variables with your secret values in configuration tab    
 3. Click Submit.
 4. Download [resources.ipynb]() and upload the notebook and fill the details in the first cell.
      - **MODELMONITOR_NAME** = {your model monitor name}
