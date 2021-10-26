@@ -27,7 +27,6 @@
 5. Select password and fill the details
 - Username, Password, HostAddress, PortNumber, Database Name
    
-
 ### Launch IDE
 1. Create an IDE (JupyterLab)
    - Use sklearn framework
@@ -37,15 +36,13 @@
   - **If your data is in SQL:**
      - Add these [USERNAME, PASSWORD, HOSTADDRESS, PORTNUMBER, DATABASENAME] environment variables with your secret values in configuration tab    
 3. Click Submit.
-4. Download the [resources.ipynb]() and upload the notebook and fill the details in the first cell.
+4. Download [resources.ipynb]() and upload the notebook and fill the details in the first cell.
      - **MODELMONITOR_NAME** = {your model monitor name}
      - **DATASET_SOURCE** = { one of your choice in ['local' or 'aws_s3' or 'sql'] }
      - **INPUT_TRAIN_TYPE** = {'training'}
-5. Run all the cells. This will create all the dkube resources required for this example automatically.
+5. Run all the cells. This will create all the dkube resources required for this example automatically. It will also create a details.txt file which contains the model monitor information.
 
 ## Insurance Model Training
-
-### Pipeline for Training or Retraining
 1. From **workspace/insurance/insurance** open **train.ipynb** to build the pipeline.
 2. The pipeline includes preprocessing, training and serving stages. Run all cells
      - **preprocessing**: the preprocessing stage generates the dataset (either training-data or retraining-data) depending on user choice.
