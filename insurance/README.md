@@ -3,9 +3,9 @@
 ## Example Flow
 - For Insurance model training follow this README only.
 - **Model monitoring using UI**
-  - Follow this README and then jump to [README.ui.md](https://github.com/pallavi-pannu-oc/model-monitoring/edit/SDK/insurance/README.ui.md)
+  - Follow this README and then jump to [README.ui.md](https://github.com/pallavi-pannu-oc/model-monitoring/blob/SDK/insurance/README.ui.md)
 - **Model monitoring using SDK**
-  - Follow this README and then jump to [README.sdk.md](https://github.com/pallavi-pannu-oc/model-monitoring/edit/SDK/insurance/README.sdk.md) 
+  - Follow this README and then jump to [README.sdk.md](https://github.com/pallavi-pannu-oc/model-monitoring/blob/SDK/insurance/README.sdk.md) 
 
 ## Prerequisites
 - This example supports 3 dataset sources i.e. Local, Aws_S3 and SQL. 
