@@ -1,74 +1,4 @@
-# MODEL MONITORING INSURANCE EXAMPLE
-
-## PREREQUISITES
-- This example supports 3 dataset sources i.e. Local, Aws_S3 and SQL. 
-- By default this example uses local data source.
-- For Aws_S3 (S3 bucket is required)
-  - Create an AWS S3 bucket with the name mm-workflow. You need access and secret key to access the bucket.
-- For SQL (SQL database is required). You need username,password,hostaddress,portnumber,databasename to access the SQL database.
-
-## DKUBE RESOURCES
-
-### Dataset (SQL)
-
-- ### Note: Skip this step if your data is in aws-s3 or in local.It will be automatically created in resources.ipynb notebook.
-
-1. Add dataset **insurance-data**
-2. Versioning: None
-3. Source : SQL
-4. Provider : MYSQL
-5. Select password and fill the details
-   - Username : **
-   - Password : **
-   - HostAddress: **
-   - PortNumber : **
-   - Database Name : **
-
-### Launch IDE
-1. Create an IDE (JupyterLab)
-   - Use sklearn framework
-2. If your data is in local, move to step 3 directly.
-   - Add the below environment variables in configuration tab **if your data is in aws_s3**,
-     - AWS_ACCESS_KEY_ID : your_access_key
-     - AWS_SECRET_ACCESS_KEY : your_secret_key
-   - Add the below environment variables in configuration tab **if your data is in SQL**
-      - USERNAME : **
-      - PASSWORD : **
-      - HOSTADDRESS: **
-      - PORTNUMBER : **
-      - DATABASENAME : **
-3. Click Submit.
-4. Upload the resources.ipynb notebook and fill the details in the first cell.
-   - MODELMONITOR_NAME = {your model monitor name}
-   - DATASET_SOURCE = { one of your choice in ['local' or 'aws_s3' or 'sql'] }
-   - INPUT_TRAIN_TYPE = {'training'}
-5.Run all the cells. This will create all the dkube resources required for this example automatically.
-
-## INSURANCE MODEL TRAINING
-
-### Pipeline for Training or Retraining (Note : Skip this step if you only want to monitor the model and not train the model.)
-
-1. From **workspace/insurance/insurance** open **train.ipynb** to build the pipeline.
-2. The pipeline includes preprocessing, training and serving stages. Run all cells
-  - **preprocessing**: the preprocessing stage generates the dataset (either training-data or retraining-data) depending on user choice.
-  - **training**: the training stage takes the generated dataset as input, train a sgd model and outputs the model.
-  - **serving**: The serving stage takes the generated model and serve it with a predict endpoint for inference. 
-3. Verify that the pipeline has created the following resources
-  - Datasets: 'insurance-training-data' with version v2.
-  - Model: 'insurance-model' with version v2
-
-### Inference
-  - Go to webapp directory, and build a docker image with given **Dockerfile** or pull **ocdr/streamlit-webapp:insurance**.
-  - Run command  
-  - > docker run -p 8501:8501 ocdr/streamlit-webapp:insurance 
-  - Open http://localhost:8501/ in your browser,
-  - Fill serving URL, auth token and other details and click predict.
-
-### Note: 
-1. For Monitoring the model using SDK, jump to README.sdk.
-2. For Monitoring the model using UI continue following this README.
-
-## MODEL MONITOR (UI)
+# MODEL MONITORING INSURANCE EXAMPLE (UI)
 
 1. From model monitoring create a new monitor
 2. Give a name.
@@ -145,9 +75,6 @@ Configure your SMTP server settings on Operator screen. This is optional. If SMT
 1. Open data_generation.ipynb notebook for generating predict and groundtruth datasets.
 2. In 1st cell, Update Frequency according to what you set in Modelmonitor. If the d3qatest tag was provided replace it with to use frequency in minutes. For eg: for 5 minutes replace it with `5m` else use `5h` for hours assuming Frequency specified in monitor was 5.
 3. Then Run All Cells. It will start Pushing the data, by default it will push the data to local.
-4. **After First Push of dataset by this script, configure the generated datasets in modelmonitor as follows.**
-   - Verify that the following datasets are created: {model-monitor}-predict, {model-monitor}-groundtruth
-   - This step will be more streamlined in coming releases.
 
 ## RETRAINING
 1. Stop the modelmonitor.
