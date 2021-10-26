@@ -16,11 +16,9 @@
 
 
 ## Dkube Resources
+#### Note: Skip the Datset (SQL) step if your data is in aws-s3 or in local.It will be automatically created by resources.ipynb notebook.
 
 ### Dataset (SQL)
-
-- ### Note: Skip this step if your data is in aws-s3 or in local.It will be automatically created in resources.ipynb notebook.
-
 1. Add dataset **insurance-data**
 2. Versioning: None
 3. Source : SQL
@@ -36,17 +34,12 @@
 1. Create an IDE (JupyterLab)
    - Use sklearn framework
 2. If your data is in local, move to step 3 directly.
-   - Add the below environment variables in configuration tab **if your data is in aws_s3**,
-     - AWS_ACCESS_KEY_ID : your_access_key
-     - AWS_SECRET_ACCESS_KEY : your_secret_key
-   - Add the below environment variables in configuration tab **if your data is in SQL**
-      - USERNAME : **
-      - PASSWORD : **
-      - HOSTADDRESS: **
-      - PORTNUMBER : **
-      - DATABASENAME : **
+   - Add the below environment variables with your secret values in configuration tab **if your data is in aws_s3**,
+     - AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+   - Add the below environment variables with your secret values in configuration tab **if your data is in SQL**
+      - USERNAME, PASSWORD, HOSTADDRESS, PORTNUMBER, DATABASENAME
 3. Click Submit.
-4. Upload the resources.ipynb notebook and fill the details in the first cell.
+4. Download the [resources.ipynb]() and upload the notebook and fill the details in the first cell.
    - MODELMONITOR_NAME = {your model monitor name}
    - DATASET_SOURCE = { one of your choice in ['local' or 'aws_s3' or 'sql'] }
    - INPUT_TRAIN_TYPE = {'training'}
