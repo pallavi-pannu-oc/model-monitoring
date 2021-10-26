@@ -1,41 +1,17 @@
-# Model Monitoring Insurance Example
+# MODEL MONITORING INSURANCE EXAMPLE
 
-## Prerequisites
-This example supports 3 dataset sources i.e. Local, Aws_S3 and sql. For aws_s3 (S3 bucket is required) and for sql (SQL database is required).
+## PREREQUISITES
+- This example supports 3 dataset sources i.e. Local, Aws_S3 and SQL. 
+- By default this example uses local data source.
+- For Aws_S3 (S3 bucket is required)
+  - Create an AWS S3 bucket with the name mm-workflow. You need access and secret key to access the bucket.
+- For SQL (SQL database is required). You need username,password,hostaddress,portnumber,databasename to access the SQL database.
 
-### Local (By default)
-1. Move to Launch IDE step below directly.
-
-### S3 Bucket
-Create an AWS S3 bucket with the name mm-workflow. You need the following to access the bucket
-   - AWS_ACCESS_KEY_ID : your_access_key
-   - AWS_SECRET_ACCESS_KEY : your_secret_key
-### SQL Database
-Create a database in your MySql server. You need the following to access the database
-   - Username : **
-   - Password : **
-   - HostAddress: **
-   - PortNumber : **
-   - Database Name : **
-
-## INSURANCE MODEL CREATION :
-
-## Launch IDE
-1. Create an IDE (JupyterLab)
-   - Use sklearn framework
-2. Add the below environment variables in configuration tab **if your data is in aws_s3**, if your data is in local skip this step.
-   - AWS_ACCESS_KEY_ID : your_access_key
-   - AWS_SECRET_ACCESS_KEY : your_secret_key
-3. Click Submit.
-4. Upload the resources.ipynb notebook and fill the details in the first cell.
-   - MODELMONITOR_NAME = {your model monitor name}
-   - DATASET_SOURCE = { 'local' or 'aws_s3' or 'sql'}
-   - INPUT_TRAIN_TYPE = {'training' or 'retraining'}
-5.Run all the cells.
+## DKUBE RESOURCES
 
 ### Dataset (SQL)
 
-- ### Note: Skip this step if your data is in aws-s3 or in local.It will be automatically created in pipeline.
+- ### Note: Skip this step if your data is in aws-s3 or in local.It will be automatically created in resources.ipynb notebook.
 
 1. Add dataset **insurance-data**
 2. Versioning: None
@@ -48,9 +24,31 @@ Create a database in your MySql server. You need the following to access the dat
    - PortNumber : **
    - Database Name : **
 
-### Pipeline (Training or Retraining)
+### Launch IDE
+1. Create an IDE (JupyterLab)
+   - Use sklearn framework
+2. If your data is in local, move to step 3 directly.
+   - Add the below environment variables in configuration tab **if your data is in aws_s3**,
+     - AWS_ACCESS_KEY_ID : your_access_key
+     - AWS_SECRET_ACCESS_KEY : your_secret_key
+   - Add the below environment variables in configuration tab **if your data is in SQL**
+      - USERNAME : **
+      - PASSWORD : **
+      - HOSTADDRESS: **
+      - PORTNUMBER : **
+      - DATABASENAME : **
+3. Click Submit.
+4. Upload the resources.ipynb notebook and fill the details in the first cell.
+   - MODELMONITOR_NAME = {your model monitor name}
+   - DATASET_SOURCE = { one of your choice in ['local' or 'aws_s3' or 'sql'] }
+   - INPUT_TRAIN_TYPE = {'training'}
+5.Run all the cells. This will create all the dkube resources required for this example automatically.
 
-1. From **workspace/insurance/insurance** open **pipeline.ipynb** to build the pipeline.
+## INSURANCE MODEL TRAINING
+
+### Pipeline for Training or Retraining (Note : Skip this step if you only want to monitor the model and not train the model.)
+
+1. From **workspace/insurance/insurance** open **train.ipynb** to build the pipeline.
 2. The pipeline includes preprocessing, training and serving stages. Run all cells
   - **preprocessing**: the preprocessing stage generates the dataset (either training-data or retraining-data) depending on user choice.
   - **training**: the training stage takes the generated dataset as input, train a sgd model and outputs the model.
@@ -66,12 +64,9 @@ Create a database in your MySql server. You need the following to access the dat
   - Open http://localhost:8501/ in your browser,
   - Fill serving URL, auth token and other details and click predict.
 
-
-## MODEL MONITOR (SDK)
-1. From **workspace/insurance/insurance**, open data_generation.ipynb notebook for pushing the groundtruth and predict datasets.
-2. In 1st cell, Update Frequency according to what you set in Modelmonitor. 
-3. Then Run All Cells. It will start Pushing the data.
-4. From **workspace/insurance/insurance** run all the cells in the modelmonitor.ipynb. New model monitor will be created.
+### Note: 
+1. For Monitoring the model using SDK, jump to README.sdk.
+2. For Monitoring the model using UI continue following this README.
 
 ## MODEL MONITOR (UI)
 
@@ -108,14 +103,6 @@ Create a database in your MySql server. You need the following to access the dat
 3. Select all or interested Input features.
 4. Click Next and save.
 
-### Data Generation
-1. Open data_generation.ipynb notebook for generating predict and groundtruth datasets.
-2. In 1st cell, Update Frequency according to what you set in Modelmonitor. If the d3qatest tag was provided replace it with to use frequency in minutes. For eg: for 5 minutes replace it with `5m` else use `5h` for hours assuming Frequency specified in monitor was 5.
-3. Then Run All Cells. It will start Pushing the data, by default it will push the data to local.
-4. **After First Push of dataset by this script, configure the generated datasets in modelmonitor as follows.**
-   - Verify that the following datasets are created: {model-monitor}-predict, {model-monitor}-groundtruth
-   - This step will be more streamlined in coming releases.
-
 ### Configure Following Dataset in modelmonitor
 **Predict Dataset**
 1. If source S3 or local
@@ -146,18 +133,26 @@ Add Performance Decay Alerts
   - Selct percentage and choose metrics from down.
   - Provide percentage threshold value betweeen 5 to 10 and save.
 
-### SMTP Settings
-Configure your SMTP server settings on Operator screen. This is optional. If SMTP server is not configured, no email alerts will be generated.
-
 ### Start Monitor.
 Click on Start for the specific monitor on Modelmonitor dashboard. 
    - Modelmonitor can only be started in 'ready' state.
    - It can be stopped anytime. Previous data will not be erased.
 
-## Retraining 
-1. **UI**: Stop the modelmonitor.
+### SMTP Settings
+Configure your SMTP server settings on Operator screen. This is optional. If SMTP server is not configured, no email alerts will be generated.
+
+## DATA GENERATION
+1. Open data_generation.ipynb notebook for generating predict and groundtruth datasets.
+2. In 1st cell, Update Frequency according to what you set in Modelmonitor. If the d3qatest tag was provided replace it with to use frequency in minutes. For eg: for 5 minutes replace it with `5m` else use `5h` for hours assuming Frequency specified in monitor was 5.
+3. Then Run All Cells. It will start Pushing the data, by default it will push the data to local.
+4. **After First Push of dataset by this script, configure the generated datasets in modelmonitor as follows.**
+   - Verify that the following datasets are created: {model-monitor}-predict, {model-monitor}-groundtruth
+   - This step will be more streamlined in coming releases.
+
+## RETRAINING
+1. Stop the modelmonitor.
 3. Open resources.ipynb and set INPUT_TRAIN_TYPE = 'retraining' and run all the cells.
-4. Open pipeline.ipynb and run all the cells.
+4. Open train.ipynb and run all the cells.
 5. This creates a new version of dataset and a new version of model
    - New dataset version will be created for 'insurance-training-data' dataset
    - New model version will be created for 'insurance-model' model
@@ -168,11 +163,6 @@ Click on Start for the specific monitor on Modelmonitor dashboard.
    - Click Next to go to the schema page and Accept the regenerated schema.
    - Wait for a few (30) sec
    - Start the modelmonitor
-7. Edit modelmonitor (SDK)
-   - Uncomment the stop model monitor cell.
-   - Run the Retraining cell and it will update the dataset and model version automatically.
 
 ## CLEANUP
-1. After your expirement is complete, 
-  - Open resources.ipynb and set CLEANUP=True in last Cleanup cell.
-  - Open modelmonitor.ipynb and set CLEANUP=True in last Cleanup cell.
+1. After your expirement is complete, Open resources.ipynb and set CLEANUP=True in last Cleanup cell.
