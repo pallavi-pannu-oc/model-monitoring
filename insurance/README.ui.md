@@ -1,6 +1,6 @@
 # MODEL MONITORING INSURANCE EXAMPLE (UI)
 
-## Create Model Monitor
+## 1. Create Model Monitor
 1. From model monitoring create a new monitor
 2. Give a name.
 3. Add tag d3qatest
@@ -9,7 +9,7 @@
 6. Change model run frequency to 5 hours. (in UI it’s five hours but it will run in every 5 mins because of d3qatest tag)
 7. Submit
 
-### Add training data 
+### 2. Add training data 
 1. Name : insurance-training-data 
    - This is DKube local dataset, created by the training/retraining pipeline above
 
@@ -21,11 +21,11 @@
 5. Note: Download the script in your setup and then add it by browsing.
 6. Save training data.
 
-### Upload train metrics
+### 2. Upload train metrics
 1. Dwonload the json from from [link](https://raw.githubusercontent.com/oneconvergence/dkube-examples/monitoring/insurance/train_metrics.json), and upload into train metrics tab.
 2.  Click Save
 
-### Update Schema
+### 3. Update Schema
 1. Edit the model monitor
 2. Go to schema and change
   - charges as prediction output.
@@ -34,7 +34,7 @@
 3. Select all or interested Input features.
 4. Click Next and save.
 
-### Configure Following Dataset in modelmonitor
+### 4. Configure Following Dataset in modelmonitor
 **Predict Dataset**
 1. If source S3 or local
   -  Dataset: {model-monitor}-predict
@@ -54,7 +54,7 @@
 - **Ground Truth Column Name**: GT_target
 - **Prediction Column Name**: charges
 
-### Alerts
+### 5. Alerts
 Add Feature Drift Alerts 
  - The datageneration script will be generating drift on the following features - age, sex, bmi, region. 
  - Suggest to configure a separate alert for each individual feature. 
@@ -66,7 +66,7 @@ Add Performance Decay Alerts
   - Selct percentage and choose metrics from down.
   - Provide percentage threshold value betweeen 5 to 10 and save.
 
-### Start Monitor.
+### 6. Start Monitor.
 Click on Start for the specific monitor on Modelmonitor dashboard. 
    - Modelmonitor can only be started in 'ready' state.
    - It can be stopped anytime. Previous data will not be erased.
