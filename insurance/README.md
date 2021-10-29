@@ -136,9 +136,10 @@ DKube provides Python SDK for creating a modelmonitor programmatically. You coul
 3. This creates a new version of dataset and a new version of model
    - New dataset version will be created for 'insurance-training-data' dataset
    - New model version will be created for 'insurance-model' model
+   - Follow step 4 if you want to retrain via sdk or step 5 if you want to retrain using UI.
 4. **SDK**:
    - From **workspace/insurance/insurance** open modelmonitor.ipynb and run the Retraining cell. It will update the dataset and model version in the existing model monitor.
-   - **UI**:
+5. **UI**:
    - Edit modelmonitor (UI)
    - Specify the new model version on basic page
    - Specify new dataset version on Training data page
