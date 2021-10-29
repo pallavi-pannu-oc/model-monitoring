@@ -136,7 +136,16 @@ DKube provides Python SDK for creating a modelmonitor programmatically. You coul
 3. This creates a new version of dataset and a new version of model
    - New dataset version will be created for 'insurance-training-data' dataset
    - New model version will be created for 'insurance-model' model
-4. From **workspace/insurance/insurance** open modelmonitor.ipynb and run the Retraining cell. It will update the dataset and model version in the existing model monitor.
+4. **SDK**:
+   - From **workspace/insurance/insurance** open modelmonitor.ipynb and run the Retraining cell. It will update the dataset and model version in the existing model monitor.
+   - **UI**:
+   - Edit modelmonitor (UI)
+   - Specify the new model version on basic page
+   - Specify new dataset version on Training data page
+   - Save & Submit
+   - Click Next to go to the schema page and Accept the regenerated schema.
+   - Wait for a few (30) sec
+   - Start the modelmonitor
 
 ## Section 6: SMTP Settings (Optional)
 Configure your SMTP server settings on Operator screen. This is optional. If SMTP server is not configured, no email alerts will be generated.
