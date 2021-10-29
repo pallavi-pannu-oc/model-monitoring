@@ -120,7 +120,7 @@ DKube provides Python SDK for creating a modelmonitor programmatically. You coul
 
 - **Create Modelmonitor using SDK**
 1. From **workspace/insurance/insurance** open [modelmonitor.ipynb](https://github.com/oneconvergence/dkube-examples/tree/monitoring/insurance/modelmonitor.ipynb) and run all the cells. New model monitor will be created.
- 
+
 - **Create Modelmonitor using UI**
   - Follow [README.ui.md](https://github.com/oneconvergence/dkube-examples/blob/monitoring/insurance/README.ui.md) for the next steps.
 
@@ -137,7 +137,7 @@ DKube provides Python SDK for creating a modelmonitor programmatically. You coul
    - New model version will be created for 'insurance-model' model
 4. From **workspace/insurance/insurance** open modelmonitor.ipynb and run the Retraining cell. It will update the dataset and model version in the existing model monitor.
 
-### Section 6: SMTP Settings (Optional)
+## Section 6: SMTP Settings (Optional)
 Configure your SMTP server settings on Operator screen. This is optional. If SMTP server is not configured, no email alerts will be generated.
 
 ## Section 7: Cleanup
