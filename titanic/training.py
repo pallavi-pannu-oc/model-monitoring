@@ -25,7 +25,7 @@ MODEL_DIR = "/model/"
 ## loading dataset
 train = pd.read_csv(train_path+'/train.csv')
 y_train = train["Survived"].values
-transformer = transformer_data.Transformer()
+transformer = transform_data.Transformer()
 x_train = transformer.preprocess(train).values
 
 # Network
