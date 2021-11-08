@@ -23,7 +23,7 @@ MODEL_DIR = "/model/"
 
 #load featureset
 train = pd.read_csv(train_path+'/train.csv')
-train = train.fillna(train.mean())
+x_train = train.fillna(train.mean())
 y_train = train["Survived"].values
 #x_train= train.drop(["PassengerId","Survived"], 1).values
 
