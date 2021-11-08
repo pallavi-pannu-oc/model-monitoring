@@ -2,10 +2,10 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from tensorflow import keras
 import tensorflow as tf
+import transform_data
 from sklearn import preprocessing
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
-from dkube.sdk import DkubeFeatureSet
 from mlflow import log_metric
 import argparse, os
 import pandas as pd
@@ -24,12 +24,9 @@ MODEL_DIR = "/model/"
 
 ## loading dataset
 train = pd.read_csv(train_path+'/train.csv')
-train = pd.DataFrame(train).fillna(train.mean())
 y_train = train["Survived"].values
-features = ["Pclass", "Sex", "SibSp", "Parch"]
-train_df = pd.get_dummies(train[features])
-train_df = pd.concat([train[["Age", "Fare", "Survived", "PassengerId"]], train_df], axis=1)
-x_train= train_df.drop(["PassengerId","Survived"], 1).values
+transformer = transformer_data.Transformer()
+x_train = transformer.preprocess(train).values
 
 # Network
 model = Sequential()
