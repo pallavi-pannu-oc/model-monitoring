@@ -2,6 +2,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from tensorflow import keras
 import tensorflow as tf
+from sklearn import preprocessing
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from dkube.sdk import DkubeFeatureSet
