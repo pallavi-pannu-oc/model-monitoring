@@ -22,15 +22,14 @@ print ("Number of epochs:", epochs)
 train_path = "/data"
 MODEL_DIR = "/model/"
 
-#load featureset
+## loading dataset
 train = pd.read_csv(train_path+'/train.csv')
+train = pd.DataFrame(train).fillna(train.mean())
+y_train = train["Survived"].values
 features = ["Pclass", "Sex", "SibSp", "Parch"]
 train_df = pd.get_dummies(train[features])
 train_df = pd.concat([train[["Age", "Fare", "Survived", "PassengerId"]], train_df], axis=1)
-y_train = train["Survived"].values
-train_df = train_df.drop(['Name','PassengerId','Cabin','Ticket','Embarked','Survived'],axis=1)
-x_train = train_df.fillna(train_df.mean()).values
-x_train.shape
+x_train= train_df.drop(["PassengerId","Survived"], 1).values
 
 # Network
 model = Sequential()
