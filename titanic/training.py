@@ -24,9 +24,8 @@ MODEL_DIR = "/model/"
 
 #load featureset
 train = pd.read_csv(train_path+'/train.csv')
-le = preprocessing.LabelEncoder()
-le = le.fit(train['Sex'])
-train['Sex'] = le.transform(train['Sex'])
+features = ["Pclass", "Sex", "SibSp", "Parch"]
+train_df = pd.get_dummies(train[features])
 y_train = train["Survived"].values
 train = train.drop(['Name','PassengerId','Cabin','Ticket','Embarked','Survived'],axis=1)
 x_train = train.fillna(train.mean()).values
