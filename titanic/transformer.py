@@ -10,9 +10,6 @@ import base64
 import sys, json
 import os
 import pandas as pd
-from io import StringIO
-import pickle
-from preprocess import transform_features, features
 
 DEFAULT_MODEL_NAME = "model"
 
@@ -28,12 +25,13 @@ parser.add_argument(
 
 args, _ = parser.parse_known_args()
 
+filename = "/tmp/temp.csv"
+
+
 class Transformer(kfserving.KFModel):
     def __init__(self, name: str, predictor_host: str):
         super().__init__(name)
         self.predictor_host = predictor_host
-        dirpath = os.path.dirname(os.path.realpath(__file__))
-        self.encoders = pickle.load( open( dirpath + "/encoders.pkl", "rb" ) )
 
     def preprocess(self, inputs: Dict) -> Dict:
         # inputs is a json file, inside that data, using the data value form a image
@@ -45,20 +43,22 @@ class Transformer(kfserving.KFModel):
         except ValueError:
             return json.dumps({"error": "Recieved invalid json"})
         data = json_data["signatures"]["inputs"][0][0]["data"]
-        df = pd.read_csv(StringIO(data))
-        df = transform_features (df)
-        for feature in features:
-            le = self.encoders[feature]
-            df[feature] = le.transform(df[feature])
-
-        values = df.drop(["Survived", "PassengerId"], 1, errors='ignore').values
-        payload = {"instances": values.tolist(), "token": inputs["token"]}
+        with open(filename, "w") as f:
+            f.write(data)
+        data = pd.read_csv(filename)
+        values = data.drop("Survived", 1).values
+        payload = {"inputs": values.tolist(), "token": inputs["token"]}
+        logging.info("token =======> %s", str(inputs["token"]))
         return payload
 
     def postprocess(self, predictions: List) -> List:
-        logging.info("postprocess =======> %s", str(type(predictions)))
-        predictions = ["Dead" if pred == 0 else "Alive" for pred in predictions["predictions"]]
-        return {"result": predictions}
+        logging.info("prep =======> %s", str(type(predictions)))
+        preds = predictions["outputs"]
+        if (preds[0]) == 0:
+            return {"result": "Dead"}
+        else:
+            return {"result": "Alive"}
+
 
 if __name__ == "__main__":
     transformer = Transformer(args.model_name, predictor_host=args.predictor_host)
