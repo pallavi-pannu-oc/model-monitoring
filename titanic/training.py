@@ -26,7 +26,7 @@ MODEL_DIR = "/model/"
 train = pd.read_csv(train_path+'/train.csv')
 y_train = train["Survived"].values
 transformer = transform_data.Transformer()
-x_train = transformer.preprocess(train).values
+x_train = transformer.preprocess(train)
 
 # Network
 model = Sequential()
