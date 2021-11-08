@@ -23,9 +23,13 @@ MODEL_DIR = "/model/"
 
 #load featureset
 train = pd.read_csv(train_path+'/train.csv')
-x_train = train.fillna(train.mean())
+le = preprocessing.LabelEncoder()
+le = le.fit(train['Sex'])
+train['Sex'] = le.transform(train['Sex'])
 y_train = train["Survived"].values
-#x_train= train.drop(["PassengerId","Survived"], 1).values
+train = train.drop(['Name','PassengerId','Cabin','Ticket','Embarked','Survived'],axis=1)
+x_train = train.fillna(train.mean()).values
+x_train.shape
 
 # Network
 model = Sequential()
