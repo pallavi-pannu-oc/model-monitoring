@@ -25,7 +25,7 @@ MODEL_DIR = "/model/"
 train = pd.read_csv(train_path)
 train = train.fillna(train.mean())
 y_train = train["Survived"].values
-x_train= train.drop(["PassengerId","Survived"], 1).values
+#x_train= train.drop(["PassengerId","Survived"], 1).values
 
 # Network
 model = Sequential()
