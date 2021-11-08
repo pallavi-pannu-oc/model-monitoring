@@ -1,5 +1,6 @@
 class Transformer():
-    def preprocess(dataframe):
+    def preprocess(self,dataframe):
+        import pandas as pd
         data_to_preprocess = dataframe 
         data_to_preprocess = data_to_preprocess.fillna(data_to_preprocess.mean())
         features = ["Pclass", "Sex", "SibSp", "Parch"]
