@@ -24,9 +24,11 @@ MODEL_DIR = "/model/"
 
 ## loading dataset
 train = pd.read_csv(train_path+'/train.csv')
-y_train = train["Survived"].values
+train = train[train["Fare"] < 100]
 transformer = transform_data.Transformer()
-x_train = transformer.preprocess(train).values
+x_train = transformer.preprocess(train)
+y_train = x_train["Survived"].values
+x_train = x_train.drop('Survived',axis=1).values
 
 # Network
 model = Sequential()
