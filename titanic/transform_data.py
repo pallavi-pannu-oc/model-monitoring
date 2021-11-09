@@ -3,6 +3,7 @@ class Transformer():
         import pandas as pd
         data_to_preprocess = dataframe 
         data_to_preprocess = data_to_preprocess.fillna(data_to_preprocess.mean())
+        data_to_preprocess["Age"] = data_to_preprocess["Age"].fillna(value=data_to_preprocess["Age"].median(), inplace=True)
         features = ["Pclass", "Sex", "SibSp", "Parch"]
         train_df = pd.get_dummies(data_to_preprocess[features])
         data_to_preprocess = pd.concat([data_to_preprocess[["Age", "Fare", "Survived", "PassengerId","timestamp"]], train_df], axis=1)
