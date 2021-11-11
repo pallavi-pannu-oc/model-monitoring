@@ -19,11 +19,11 @@ batch_size = args.batch_size
 epochs = args.num_epochs
 print ("Number of epochs:", epochs)
 
-train_path = "/data"
+train_path = "/train-data"
 MODEL_DIR = "/model/"
 
 ## loading dataset
-train = pd.read_csv(train_path+'/train.csv')
+train = pd.read_csv(train_path+'/data.csv')
 train = train[train["Fare"] < 100]
 transformer = transform_data.Transformer()
 x_train = transformer.preprocess(train)
