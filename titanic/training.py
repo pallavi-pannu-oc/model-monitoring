@@ -28,7 +28,7 @@ train = train[train["Fare"] < 100]
 transformer = transform_data.Transformer()
 x_train = transformer.preprocess(train)
 y_train = x_train["Survived"].values
-x_train = x_train.drop('Survived',axis=1).values
+x_train = x_train.drop(['Survived','PassengerId','timestamp'],axis=1).values
 
 # Network
 model = Sequential()
