@@ -13,10 +13,12 @@ import pandas as pd
 parser = argparse.ArgumentParser()
 parser.add_argument('--batch_size', type=int, default=1, help='Batch size for training.')
 parser.add_argument('--num_epochs', type=int, default=int(os.getenv("EPOCHS","20")), help='Number of epochs to train for.')
+parser.add_argument('--data_source',type=str,default='local',help='Data source')
 args = parser.parse_args()
 
 batch_size = args.batch_size
 epochs = args.num_epochs
+data_source = args.data_source
 print ("Number of epochs:", epochs)
 
 train_path = "/train-data"
@@ -24,11 +26,12 @@ MODEL_DIR = "/model/"
 
 ## loading dataset
 train = pd.read_csv(train_path+'/data.csv')
-train = train[train["Fare"] < 100]
-transformer = transform_data.Transformer()
-x_train = transformer.preprocess(train)
-y_train = x_train["Survived"].values
-x_train = x_train.drop(['Survived','PassengerId','timestamp'],axis=1).values
+if data_source == 'local' or data_source == 'aws_s3':
+    train = train[train["Fare"] < 100]
+    transformer = transform_data.Transformer()
+    train = transformer.preprocess(train)
+y_train = train["Survived"].values
+x_train = train.drop(['Survived','PassengerId','timestamp'],axis=1).values
 
 # Network
 model = Sequential()
