@@ -18,7 +18,7 @@
 3. If training data source is SQL
       - Name: titanic-data-sql
       - Add query: `select * from titanic` (the table name can be different)
-4. Download the [transformer script](https://github.com/oneconvergence/dkube-examples/tree/monitoring/titanic/transform-data.py) and upload. 
+4. Download the [transformer script](https://github.com/oneconvergence/dkube-examples/tree/monitoring/titanic/transform-data.py) for s3/d3 data source and upload. 
 5. Note: Download the script in your setup and then add it by browsing.
 6. Save training data.
 
