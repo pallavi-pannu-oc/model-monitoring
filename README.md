@@ -9,8 +9,8 @@ If it is external, click on Deployments in the left tab and import a deployment 
 
 ### 2. Drift Monitoring
 1. Check Enabled option and provide frequency as 5 minutes and algorithm as auto.
-2. Add Train Data :
-If data source is **aws_s3 / local**
+2. **Add Train Data** :
+-  If data source is **aws_s3 / local**
 -  Select dataset as insurance-data and version as v1 if your data source is aws_s3 or local.
 - Upload transformer script from [link](https://raw.githubusercontent.com/oneconvergence/dkube-examples/monitoring/insurance/transform-data.py)
 - If your datasource is **sql**
@@ -19,13 +19,13 @@ If data source is **aws_s3 / local**
   - Provide sql query as "select * from insurance"
   - Upload transformer script from [link](https://raw.githubusercontent.com/oneconvergence/dkube-examples/monitoring/insurance/transform-data.py)
 
-3. Add Predict Data:
-If data source is **aws_s3 / local**
+3. **Add Predict Data**:
+- If data source is **aws_s3 / local**
      -  Select dataset as {MONITOR_NAME}-predict.
      -  If the dataset is local then select the version as v1.
      -  Select dataset format as Tabular.
      -  Date suffix is yyyy/dd/mm/hh
-If your datasource is **sql**, 
+- If your datasource is **sql**, 
     - Select dataset as insurance-data-sql.
     - Select dataset format as Tabular.
     - Provide sql query as "select * from insurance_predict"
