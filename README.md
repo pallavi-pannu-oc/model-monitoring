@@ -43,20 +43,20 @@ If it is external, click on Deployments in the left tab and import a deployment 
 1. Check Enabled option and provide frequency as 5 minutes and upload soft thresholds from [link]([link](https://raw.githubusercontent.com/oneconvergence/dkube-examples/monitoring/insurance/performance_soft_thresholds.json)
 )
 2. In Compute Metrics select Labelled dataset
-1. If source S3 :
+1. **If source is S3** :
   -  Dataset: {model-monitor}-groundtruth
   -  Dataset Format : Tabular
   -  Select Prediction column name as “charges”
   -  Select Groundtruth column name as GT_target.
 
-2. If source local :
+2. **If source is local** :
   -  Dataset: {model-monitor}-groundtruth
   -  Dataset Format : Tabular
   -  Select Dataset Version as v1.
   -  Select Prediction column name as “charges”
   -  Select Groundtruth column name as GT_target.
 
-3. If source sql :
+3. **If source is sql**:
 - Dataset : insurance-data-sql
 - Sql query field : select * from insurance_gt
 - Dataset Format : Tabular
