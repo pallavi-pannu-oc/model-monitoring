@@ -13,22 +13,22 @@ If it is external, click on Deployments in the left tab and import a deployment 
 If data source is **aws_s3 / local**
 -  Select dataset as insurance-data and version as v1 if your data source is aws_s3 or local.
 - Upload transformer script from [link](https://raw.githubusercontent.com/oneconvergence/dkube-examples/monitoring/insurance/transform-data.py)
-     -      If your datasource is **sql**
-            - Select dataset as insurance-data-sql.
-            - Select dataset format as Tabular.
-            - Provide sql query as "select * from insurance"
-            - Upload transformer script from [link](https://raw.githubusercontent.com/oneconvergence/dkube-examples/monitoring/insurance/transform-data.py)
+- If your datasource is **sql**
+  - Select dataset as insurance-data-sql.
+  - Select dataset format as Tabular.
+  - Provide sql query as "select * from insurance"
+  - Upload transformer script from [link](https://raw.githubusercontent.com/oneconvergence/dkube-examples/monitoring/insurance/transform-data.py)
 
 3. Add Predict Data:
 If data source is **aws_s3 / local**
-              -  Select dataset as {MONITOR_NAME}-predict.
-              -  If the dataset is local then select the version as v1.
-              -  Select dataset format as Tabular.
-              -  Date suffix is yyyy/dd/mm/hh
-     -    If your datasource is **sql**, 
-              - Select dataset as insurance-data-sql.
-              - Select dataset format as Tabular.
-              - Provide sql query as "select * from insurance_predict"
+     -  Select dataset as {MONITOR_NAME}-predict.
+     -  If the dataset is local then select the version as v1.
+     -  Select dataset format as Tabular.
+     -  Date suffix is yyyy/dd/mm/hh
+If your datasource is **sql**, 
+    - Select dataset as insurance-data-sql.
+    - Select dataset format as Tabular.
+    - Provide sql query as "select * from insurance_predict"
 
 ### 3. Update Schema
 1. Edit the model monitor
@@ -57,11 +57,11 @@ If data source is **aws_s3 / local**
   -  Select Groundtruth column name as GT_target.
 
 3. If source sql :
-Dataset : insurance-data-sql
-Sql query field : select * from insurance_gt
-Dataset Format : Tabular
-Select Prediction column name as “charges”
- Select Groundtruth column name as GT_target.
+- Dataset : insurance-data-sql
+- Sql query field : select * from insurance_gt
+- Dataset Format : Tabular
+- Select Prediction column name as “charges”
+- Select Groundtruth column name as GT_target.
 
 4. Click on Submit.
 
