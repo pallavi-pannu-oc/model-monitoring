@@ -11,8 +11,8 @@ If it is external, click on Deployments in the left tab and import a deployment 
 1. Check Enabled option and provide frequency as 5 minutes and algorithm as auto.
 2. **Add Train Data** :
 -  If data source is **aws_s3 / local**
--  Select dataset as insurance-data and version as v1 if your data source is aws_s3 or local.
-- Upload transformer script from [link](https://raw.githubusercontent.com/oneconvergence/dkube-examples/monitoring/insurance/transform-data.py)
+   - Select dataset as insurance-data and version as v1 if your data source is aws_s3 or local.
+   - Upload transformer script from [link](https://raw.githubusercontent.com/oneconvergence/dkube-examples/monitoring/insurance/transform-data.py)
 - If your datasource is **sql**
   - Select dataset as insurance-data-sql.
   - Select dataset format as Tabular.
